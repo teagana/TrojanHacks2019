@@ -1,0 +1,23 @@
+body {
+	font-family: 'Open Sans';
+	margin: 0;
+	padding: 0;
+}
+
+#outercontainer {
+	width: 100%;
+	height: 100vh;
+	position: relative;
+}
+
+/* show hidden password when user hovers over it */
+#hidden-password {
+	opacity: 0;
+	position: absolute;
+	bottom: 0;
+	right: 10px;
+	
+}
+#hidden-password:hover {
+	opacity: 1;
+}
