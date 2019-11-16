@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>match 2</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+	<div id="outercontainer">
+		<!-- where user's keypresses show up -->
+		<div id="matching-area">
+			<!-- four rows of four for matching -->
+			<div class="matching-row">
+				<div class="card"></div>
+				<div class="card"></div>
+				<div class="card"></div>
+				<div class="card"></div>
+			</div>
+			<div class="matching-row">
+				<div class="card"></div>
+				<div class="card"></div>
+				<div class="card"></div>
+				<div class="card"></div>
+			</div>
+			<div class="matching-row">
+				<div class="card"></div>
+				<div class="card"></div>
+				<div class="card"></div>
+				<div class="card"></div>
+			</div>
+			<div class="matching-row">
+				<div class="card"></div>
+				<div class="card"></div>
+				<div class="card"></div>
+				<div class="card"></div>
+			</div>
+		</div>
+	</div>
+
+	<!-- javascript here -->
+	<script>
+		//function to shuffle colors array
+		function shuffle(array) {
+		  var currentIndex = array.length, temporaryValue, randomIndex;
+
+		  // While there remain elements to shuffle...
+		  while (0 !== currentIndex) {
+
+		    // Pick a remaining element...
+		    randomIndex = Math.floor(Math.random() * currentIndex);
+		    currentIndex -= 1;
+
+		    // And swap it with the current element.
+		    temporaryValue = array[currentIndex];
+		    array[currentIndex] = array[randomIndex];
+		    array[randomIndex] = temporaryValue;
+		  }
+
+		  return array;
+		}
+
+		//color array for matching -- randomly order
+		var colors = ["#151B54", "#4863A0", "#0000A0", "#1569C7", "#3090C7", "#38ACEC", "#A0CFEC", "#00FFFF", "#151B54", "#4863A0", "#0000A0", "#1569C7", "#3090C7", "#38ACEC", "#A0CFEC", "#00FFFF"];
+		colors = shuffle(colors);
+		var cards = document.querySelectorAll(".card");
+
+		//loop through all the cards and assign each color twice randomly
+		for(var i = 0; i < cards.length; i++) {
+			console.log(cards[i].innerHTML);
+			cards[i].setAttribute("data-color", colors[i]);
+			cards[i].style.backgroundColor = colors[i];
+		}
+
+		
+	</script>
+</body>
+</html>

@@ -9,9 +9,7 @@
 <body>
 	<div id="outercontainer">
 		<!-- where user's keypresses show up -->
-		<div id="type-box">
-			
-		</div>
+		<div id="type-box"></div>
 		<div id="hidden-password">
 			<p>helloworld</p>
 		</div>
@@ -23,6 +21,7 @@
 
 		var userString = "";
 
+		//called whenever a keydpwn detected
 		function userTyped(e) {
 
 			// only let user type lowercase letters and no spaces (that messes up page)
@@ -34,7 +33,11 @@
 			else if(e.key === "Enter") {
 				//user typed correct password
 				if(userString == "helloworld") {
-					document.querySelector("#type-box").innerHTML = "congrats!!";
+					document.querySelector("#type-box").innerHTML = "great detective work!";
+					//wait two seconds then transition to match 2 game
+					setTimeout(function() {
+						document.location = 'match2.html';
+					}, 2000);
 				}
 				//user typed incorrect password
 				else {
