@@ -8,9 +8,48 @@
 </head>
 <body>
 	<div id="outercontainer">
+		<!-- where user's keypresses show up -->
+		<div id="type-box">
+			
+		</div>
 		<div id="hidden-password">
-			<p>hello world</p>
+			<p>helloworld</p>
 		</div>
 	</div>
+
+	<!-- javascript here -->
+	<script>
+		document.addEventListener('keydown', userTyped);
+
+		var userString = "";
+
+		function userTyped(e) {
+
+			// only let user type lowercase letters and no spaces (that messes up page)
+			if(e.key >= 'a' && e.key <= 'z' && e.key != ' ') {
+				document.querySelector("#type-box").innerHTML += e.key;
+		  		userString += e.key;
+			}
+			//user "submits" password
+			else if(e.key === "Enter") {
+				//user typed correct password
+				if(userString == "helloworld") {
+					document.querySelector("#type-box").innerHTML = "congrats!!";
+				}
+				//user typed incorrect password
+				else {
+					document.querySelector("#type-box").innerHTML = "look harder";
+					
+					//wait two seconds, then let them try again
+					setTimeout(function() {
+						document.querySelector("#type-box").innerHTML = "";
+						userString = "";
+					}, 2000);
+				}
+			}
+		  	
+
+		}
+	</script>
 </body>
 </html>

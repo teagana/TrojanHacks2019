@@ -2,6 +2,7 @@ body {
 	font-family: 'Open Sans';
 	margin: 0;
 	padding: 0;
+	overflow: hidden;
 }
 
 #outercontainer {
@@ -20,4 +21,15 @@ body {
 }
 #hidden-password:hover {
 	opacity: 1;
+}
+
+/* where the user's keypresses show up on the page */
+#type-box {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 40px;
+	text-align: center;
+	position: absolute;
+	top: 40vh;
 }
