@@ -60,17 +60,82 @@
 		  return array;
 		}
 
+		//called when any card is clicked on for a specific card
+		function cardClicked(card, color) {
+			// console.log(card + color);
+			card.style.backgroundColor = color;
+			card.setAttribute("data-flipped", "true");
+
+			//turn card back to black and false in two seconds
+			setTimeout(function() {
+			  	card.style.backgroundColor = "black";
+				card.setAttribute("data-flipped", "false");
+			}, 2000);
+
+			
+
+			//loop through rest of the cards and check for others flipped of same color
+			// for(var j = 0; j < cards.length; j++) {
+
+			// 	//don't check for the current card and make sure it's flipped (true)
+			// 	if(cards[j].getAttribute("data-flipped") == "true" && cards[j] != cards[i]) {
+
+			// 		//if the two cards have the same color
+			// 		if(cards[j].getAttribute("data-color") == cards[j].getAttribute("data-color")) {
+			// 			console.log("MATCHED");
+			// 		}
+			// 	}
+			// }
+		}
+
 		//color array for matching -- randomly order
 		var colors = ["#151B54", "#4863A0", "#0000A0", "#1569C7", "#3090C7", "#38ACEC", "#A0CFEC", "#00FFFF", "#151B54", "#4863A0", "#0000A0", "#1569C7", "#3090C7", "#38ACEC", "#A0CFEC", "#00FFFF"];
 		colors = shuffle(colors);
-		var cards = document.querySelectorAll(".card");
+		cards = document.querySelectorAll(".card");
+		var i = 0;
+		console.log(cards);
 
 		//loop through all the cards and assign each color twice randomly
-		for(var i = 0; i < cards.length; i++) {
-			console.log(cards[i].innerHTML);
+		for(i = 0; i < cards.length; i++) {
+			
 			cards[i].setAttribute("data-color", colors[i]);
-			cards[i].style.backgroundColor = colors[i];
+			cards[i].setAttribute("data-flipped", "false");
+
+			// cards[i].style.backgroundColor = colors[i];
+			cards[i].addEventListener("click", function() {
+        		cardClicked(this, this.getAttribute("data-color"));
+   			}); 
+			//cardClicked(cards[i], colors[i]);
+
+			//(function(card) {
+				//show color and change flipped to true
+				// card.style.backgroundColor = colors[i];
+				// card.setAttribute("data-flipped", "true");
+				
+				//turn card back to black and false in two seconds
+				// setTimeout((function(card) {
+				//   	card.style.backgroundColor = "black";
+				// 	card.setAttribute("data-flipped", "false");
+				// }(this)), 2000);
+
+				
+
+				//loop through rest of the cards and check for others flipped of same color
+				// for(var j = 0; j < cards.length; j++) {
+
+				// 	//don't check for the current card and make sure it's flipped (true)
+				// 	if(cards[j].getAttribute("data-flipped") == "true" && cards[j] != cards[i]) {
+
+				// 		//if the two cards have the same color
+				// 		if(cards[j].getAttribute("data-color") == cards[j].getAttribute("data-color")) {
+				// 			console.log("MATCHED");
+				// 		}
+				// 	}
+				// }
+			//})(cards[i]);//end of onclick function
 		}
+
+		
 
 		
 	</script>
