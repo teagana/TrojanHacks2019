@@ -39,7 +39,8 @@
 		    //if top left corner of cat is within the box
 		    if(currentX >= leftX && currentX <= rightX && currentY <= bottomY && currentY >= topY) {
 		    	$("#cat-area").css('display', 'block');
-		    	return;
+		    	
+		    	document.location='congrats.html';
 		    }
 
 		    currentX = getRandomInt(0, maxX);

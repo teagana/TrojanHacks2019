@@ -135,8 +135,27 @@ body {
 
 }
 
-#canvas {
+#canvas, #mess {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
+}
+
+/* FOR CONGRATS.HTML */
+#inner-mess {
+	position: absolute;
+	top: 20vh;
+	text-align: center;
+}
+
+#inner-mess a {
+	display: block;
+	color: skyblue;
+	font-size: 30px;
+	text-decoration: none;
+	margin-top: 20px;
+}
+
+#inner-mess a:hover {
+	text-decoration: underline;
 }
