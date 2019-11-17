@@ -8,6 +8,7 @@
 </head>
 <body>
 	<div id="outercontainer">
+		<div id="timer"></div>
 		<div id="matching-area">
 			<!-- four rows of four for matching -->
 			<div class="matching-row">
@@ -140,8 +141,23 @@
 			
 		}
 
-		
+		//flash lose message and reset page after 30 seconds
+		setTimeout(function() {
 
+			//flash lose message
+			document.querySelector("#matching-area").innerHTML = "<h1>you lose :(</h1>";
+			document.querySelector("#matching-area").style.textAlign = "center";
+			document.querySelector("#matching-area").style.fontSize = "60px";
+
+			//wait two seconds, then refresh page
+			setTimeout(function() {
+					document.location = 'match2.html';
+				}, 2000);
+
+		}, 60000);
+
+		
+	
 		
 	</script>
 </body>

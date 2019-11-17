@@ -205,7 +205,7 @@
 					winCounter++;
 					document.querySelector("#game-area").innerHTML += "<h1 class='msg'>you win! "+winCounter+"/3</h1>";
 					document.querySelector("#game-area").style.textAlign = "center";
-					document.querySelector("#game-area").style.fontSize = "40px";
+					document.querySelector("#game-area").style.fontSize = "30px";
 
 					
 					//subract (all) win message(s) after 2 seconds/transition
@@ -228,13 +228,13 @@
 				else {
 					document.querySelector("#game-area").innerHTML += "<h1 class='msg'>you lose :(</h1>";
 					document.querySelector("#game-area").style.textAlign = "center";
-					document.querySelector("#game-area").style.fontSize = "40px";
+					document.querySelector("#game-area").style.fontSize = "30px";
 
 					winCounter = 0;
 					setTimeout(function() {
 
 						//start over
-						reset();
+						reset(); //or document.location = 'tictactoe.html'?
 
 					}, 2000);
 
@@ -249,7 +249,7 @@
 	            winCounter = 0;
 				document.querySelector("#game-area").innerHTML += "<h1 class='msg'>cat's game</h1>";
 				document.querySelector("#game-area").style.textAlign = "center";
-				document.querySelector("#game-area").style.fontSize = "40px";
+				document.querySelector("#game-area").style.fontSize = "30px";
 
 				setTimeout(function() {
 
