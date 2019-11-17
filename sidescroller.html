@@ -18,7 +18,7 @@
 		var ctx = canvas.getContext("2d");
 		var ballRadius = 10;
 		var x = canvas.width/2;
-		var y = canvas.height-20;
+		var y = canvas.height-50;
 		var dx = -4;
 		var dy = 1.5;
 		var paddleHeight = 5;
@@ -28,7 +28,7 @@
 		var rightPressed = false;
 		var leftPressed = false;
 		var upPressed = false;
-		var inAir = false;
+		var inAir = true;
 		var gravForce = 2;
 
 		var brickRowCount = 5;
@@ -41,6 +41,10 @@
 		var score = 0;
 		var lives = 3;
 
+		var curFloorPos = 0;
+
+		var onFast = 0;
+
 		var bricks = [];
 		for(var c=0; c<brickColumnCount; c++) {
 		  bricks[c] = [];
@@ -51,6 +55,12 @@
 		var obstacles = [];
 		for(var c=0; c<20; c++) {
 		  obstacles[c]={ x: canvas.width, y: canvas.height-40, valid: 0, width: 20, height: 40, scored: 0 };
+		}
+
+		var floor = [];
+		for (var c=0; c<100; c++)
+		{
+			floor[c]={x: canvas.width, y: canvas.height-10, valid: 0, width: canvas.width, height:10, bounce: 0, sticky: 0, fast: 0};
 		}
 
 		var xPos = (canvas.width);
@@ -174,7 +184,7 @@
 		    		//collision
 		    		if (collide)
 		    		{
-		    			if( (mx > obstacles[i].x) && (mx < (obstacles[i].x+w)) && (y > obstacles[i].y) && (y < (obstacles[i].y+h))) 
+		    			if( (mx > obstacles[i].x) && (mx < (obstacles[i].x+obstacles[i].width)) && (y > obstacles[i].y) && (y < (obstacles[i].y+obstacles[i].height))) 
 					    {
 					        //dy = -dy;
 					          //b.status = 0;
@@ -208,7 +218,7 @@
 		function spawnObstacle()
 		{
 			var wid = getRndInteger(5,20);
-			var high = getRndInteger(30, 60);
+			var high = getRndInteger(40, 90);
 			for (var i=0; i<20; i++)
 			{
 				 //obstacles[c]={ x: canvas.width, y: canvas.height-40, valid: 0, width: 20, height: 40 };
@@ -225,8 +235,6 @@
 					return;
 				}
 			}
-
-
 		}
 
 		function drawScore() {
@@ -240,29 +248,195 @@
 		  ctx.fillStyle = "#0095DD";
 		  ctx.fillText("Lives: "+lives, canvas.width-65, 20);
 		}
+		function drawFloor()
+		{
+			
+			for (var i=0; i<100; i++)
+			{
+
+
+			
+				 //obstacles[c]={ x: canvas.width, y: canvas.height-40, valid: 0, width: 20, height: 40 };
+				if (floor[i].valid == 1)
+				{
+					ctx.beginPath();
+					floor[i].x += dx;
+		    		ctx.rect(floor[i].x, floor[i].y, floor[i].width, floor[i].height);
+		    		if (floor[i].bounce == 1)
+		    		{
+		    			ctx.fillStyle = '#D1136f';
+		    			ctx.globalCompositeOperation='source-over';
+		    		}
+		    		else if (floor[i].sticky ==1)
+		    		{
+		    			ctx.fillStyle = '#13D146';
+		    			ctx.globalCompositeOperation='source-over';
+		    		}
+		    		else if (floor[i].fast == 1)
+		    		{
+		    			ctx.fillStyle = '#CED113';
+		    			ctx.globalCompositeOperation='source-over';
+		    		}
+		    		else
+		    		{
+		    			ctx.fillStyle = "#0095DD";
+		    			ctx.globalCompositeOperation='destination-over';
+		    		}
+		    		 //hex num color
+		    		ctx.fill();
+		    		ctx.fillStyle = "#0095DD";
+		    		ctx.closePath();
+
+		    		var mx = canvas.width/2;
+		    		//collision
+		    		usedY = y+ballRadius+1;
+		    		
+		    		if( (mx > floor[i].x) && (mx < (floor[i].x+floor[i].width)) && (usedY > floor[i].y) && (usedY < (floor[i].y+floor[i].height))) 
+					{
+						if ( (floor[i].bounce == 1) && (inAir == true))
+					    {
+					    	dy = -30;
+					    	inAir = true;
+					    }
+					    else if ( floor[i].sticky == 1)
+					    {
+					    	dx = 0;
+					    	inAir = false;
+					    	dy = 0;
+					    }
+					    else if ( floor[i].fast == 1)
+					    {
+					    	dx = -6;
+					    	inAir = false;
+					    	dy = 0;
+					    	onFast = 1;
+					    }
+					    else
+					    {
+					    	inAir = false;
+					    	dy = 0;
+					    	onFast = 0;
+					    }
+					    y=floor[i].y - ballRadius;
+				   }
+				   if (floor[i].x < -100)
+				    {
+				     	floor[i].valid = 0;
+				    }
+				}
+				 
+
+			}
+		}
+		function spawnFloor()
+		{
+			var wid = 80;
+			var high = 20;
+			var bounce = getRndInteger(1, 20);
+			var stick = getRndInteger(1, 20);
+			var fast = getRndInteger(1, 20);
+			//floor[c]={x: canvas.width, y: canvas.height-20, valid: 0, width: wid, height:20};
+			for (var i=0; i<100; i++)
+			{
+				
+				if (floor[i].valid == 0)
+				{
+					floor[i].valid = 1;
+					floor[i].width = wid;
+					floor[i].height = high;
+					floor[i].y = canvas.height - high;
+					floor[i].x = canvas.width;
+					if (bounce == 5)
+					{
+						floor[i].bounce = 1;
+						floor[i].sticky = 0;
+					}
+					else if (stick == 5)
+					{
+						floor[i].sticky = 1;
+						floor[i].bounce = 0;
+					}
+					else if (fast == 5)
+					{
+						floor[i].fast = 1;
+						floor[i].sticky = 0;
+						floor[i].bounce = 0;
+					}
+					else
+					{
+						floor[i].bounce = 0;
+						floor[i].sticky = 0;
+						floor[i].fast = 0;
+
+					}
+
+					var time = 300;
+					var special = getRndInteger(1, 10);
+					//if (special == 5)
+					//{
+					//	time = 500;
+					//}
+					//var special = getRndInteger(1, 20);
+					setTimeout(spawnFloor, time);
+					return;
+				}
+			}
+		}
+
+		function initFloor()
+		{
+			var wid = 80;
+			var high = 20;
+			var firstx = 0;
+			var firsty = canvas.height-20;
+			for (var i=0; i<30; i++)
+			{
+				floor[i].valid = 1;
+				floor[i].width = wid;
+				floor[i].height = high;
+				floor[i].y = firsty;
+				floor[i].x = firstx;
+				floor[i].bounce = 0;
+				floor[i].sticky = 0;
+				floor[i].fast = 0;
+				firstx+= wid;
+				curFloorPos += wid;
+			}
+			//spawnFloor();
+			drawFloor();
+			
+		}
 
 		function draw() {
 		  ctx.clearRect(0, 0, canvas.width, canvas.height);
-		 // drawBricks();
 		  drawBall();
-		  drawPaddle();
 		  drawScore();
-		  //drawLives();
-		  //drawObstacle();
+		  drawFloor();
 		  drawObstacles();
-		  
-		  
-		  if(y + dy > canvas.height-ballRadius) {
-		    //if(x > paddleX && x < paddleX + paddleWidth) {
-		      inAir = false;
-		      dy = 0;
-		     
-		  }
+
+		  ctx.beginPath();
+		  //ctx.rect(floor[i].x, floor[i].y, floor[i].width, floor[i].height);
+		
+		  ctx.rect(0, canvas.height-20, canvas.width, canvas.height);
+		    		
+		    		
+		  ctx.globalCompositeOperation='destination-over';
+		  ctx.fillStyle = "#0095DD";
+		    		 //hex num color
+		  ctx.fill();
+		    		
+		  ctx.closePath();
 
 		
-		  if (inAir)
+		  if (inAir == true)
 		  {
 		   dy += gravForce;
+		   dx = -4;
+		   onFast = 0;
+		  }
+		  if (onFast == 1)
+		  {
+		  	dx = -6;
 		  }
 		  //if(leftPressed && (inAir == false))
 		  if(upPressed && (inAir == false))
@@ -274,11 +448,29 @@
 			
 		  x += dx;
 		  y += dy;
+		  
+		  if (y > canvas.height)
+		  {
+		  	//alert("GAME OVER");
+		  	//document.location.reload(true);
+		  	y= canvas.height-20+ballRadius;
+		  }
+
+		  if (score == 15)
+		  {
+		  	alert("YOU WIN");
+		  	document.location='match2.html';
+		  }
+		  	
+
 		  requestAnimationFrame(draw);
 		}
 
+		initFloor();
 		draw();
+		spawnFloor();
 		spawnObstacle();
+		//spawnFloor();
 		//maybe call spawn obstacle here, and have it continuously run
 	</script>
 </body>
