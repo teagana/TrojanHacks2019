@@ -180,7 +180,7 @@
 		}
 		function spawnObstacle()
 		{
-			var wid = getRndInteger(5,20);
+			var wid = getRndInteger(10,25);
 			var high = getRndInteger(40, 90);
 			for (var i=0; i<20; i++)
 			{
@@ -417,13 +417,13 @@
 		  	inAir = false;
 		  }
 
-		  if (score == 15)
+		  if (score == 10)
 		  {
 		  	alert("YOU WIN");
 		  	document.location='match2.html';
 		  }
 		  	
-		  if (score < 15)
+		  if (score < 10)
 		  {
 		  	requestAnimationFrame(draw);
 		  }
