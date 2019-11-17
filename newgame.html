@@ -9,12 +9,14 @@
 		}
 	</style>
 
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
 	<div id="outercontainer">
 		<div id="canvas">
 			<canvas id="myCanvas" width="480" height="320"></canvas>
+			<h1 id="game-msg">you lose :(</h1>
 		</div>
 	</div>
 	
@@ -152,7 +154,6 @@
 					        //dy = -dy;
 					          //b.status = 0;
 					        //score++;
-					        alert("GAME OVER");
 					        collide = 0;
 					        //clear our array probably
 					        obstacles[i].x = canvas.width;
@@ -160,8 +161,18 @@
 					        {
 					        	obstacles[j].valid == 0;
 					        }
-					        // = canvas.width;
-					        document.location.reload(true);
+
+					        dx = 0;
+
+					        document.querySelector("#game-msg").style.opacity = "1";
+
+					        setTimeout(function() {
+					        	
+						        console.log("in timeout");
+						        // = canvas.width;
+						        document.location.reload(true);
+					        }, 3500);
+					        
 					     }
 		    		}
 		    		if ((obstacles[i].x < canvas.width/2 -20) && (obstacles[i].scored == 0))
