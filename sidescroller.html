@@ -24,9 +24,9 @@
 		var ctx = canvas.getContext("2d");
 		var ballRadius = 10;
 		var x = canvas.width/2;
-		var y = canvas.height-50;
+		var y = canvas.height-100;
 		var dx = -4;
-		var dy = 1.5;
+		var dy = -2;
 		var paddleHeight = 5;
 		var paddleWidth = 400;
 		var paddleX = (canvas.width-paddleWidth)/2;
@@ -113,7 +113,7 @@
 		function drawBall() {
 		  ctx.beginPath();
 		  ctx.arc(canvas.width/2, y, ballRadius, 0, Math.PI*2);
-		  ctx.fillStyle = "#0095DD";
+		  ctx.fillStyle = "#AF47D1";
 		  ctx.fill();
 		  ctx.closePath();
 		}
@@ -138,6 +138,7 @@
 					obstacles[i].x += dx;
 		    		ctx.rect(obstacles[i].x, obstacles[i].y, obstacles[i].width, obstacles[i].height);
 		    		ctx.fillStyle = "#0095DD"; //hex num color
+		    		ctx.globalCompositeOperation='destination-over';
 		    		ctx.fill();
 		    		ctx.closePath();
 
@@ -381,16 +382,11 @@
 		  ctx.beginPath();
 		  //ctx.rect(floor[i].x, floor[i].y, floor[i].width, floor[i].height);
 		
-		  ctx.rect(0, canvas.height-20, canvas.width, canvas.height);
-		    		
-		    		
+		  ctx.rect(0, canvas.height-20, canvas.width, canvas.height);	
 		  ctx.globalCompositeOperation='destination-over';
 		  ctx.fillStyle = "#0095DD";
-		    		 //hex num color
-		  ctx.fill();
-		    		
+		  ctx.fill();	
 		  ctx.closePath();
-
 		
 		  if (inAir == true)
 		  {
@@ -412,7 +408,7 @@
 			
 		  x += dx;
 		  y += dy;
-		  
+
 		  if (y > canvas.height-15)
 		  {
 		  	//alert("GAME OVER");
