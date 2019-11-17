@@ -8,7 +8,225 @@
 </head>
 <body>
 	<div id="outercontainer">
-		tic tac toe
+		<div id="game-area">
+			<!-- tic tac toe box -->
+			<div class="game-row">
+				<div id="one" class="box left top"></div>
+				<div id="two" class="box top"></div>
+				<div id="three" class="box top right"></div>
+			</div>
+			<div class="game-row">
+				<div id="four" class="box left"></div>
+				<div id="five" class="box"></div>
+				<div id="six" class="box right"></div>
+			</div>
+			<div class="game-row">
+				<div id="seven" class="box left bottom"></div>
+				<div id="eight" class="box bottom"></div>
+				<div id="nine" class="box right bottom"></div>
+			</div>
+		</div>
 	</div>
+
+	<!-- javascript here -->
+	<script>
+		//array of all the boxes
+		var boxes = document.querySelectorAll(".box");
+		var boxNums = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+		var moveCount = 0;
+
+		//function to shuffle boxes array so computer can choose randomly
+		function shuffle(array) {
+		  var currentIndex = array.length, temporaryValue, randomIndex;
+
+		  // While there remain elements to shuffle...
+		  while (0 !== currentIndex) {
+
+		    // Pick a remaining element...
+		    randomIndex = Math.floor(Math.random() * currentIndex);
+		    currentIndex -= 1;
+
+		    // And swap it with the current element.
+		    temporaryValue = array[currentIndex];
+		    array[currentIndex] = array[randomIndex];
+		    array[randomIndex] = temporaryValue;
+		  }
+
+		  return array;
+		}
+
+		function checkRow(player, num) {
+			var start = 0; //check row1 by default
+
+			//check row2
+			if(num >= 3 && num <= 5) {
+				start = 3;
+				console.log("check row2");
+			}
+			//check row3
+			else if(num >= 6) {
+				start = 6;
+				console.log("check row3");
+			}
+
+			for(var i = start; i < start+3; i++) {
+				if(boxes[i].innerHTML != player)
+					break;
+				if(i == start+2) {
+					//report win for player
+					console.log(player + " wins");
+				}
+			}
+		}
+
+		function checkCol(player, num) {
+			var start = 0; //check col1 by default
+
+			//check col2
+			if(num % 3 == 1) {
+				start = 1;
+				console.log("check col2");
+			}
+			//check col3
+			else if(num % 3 == 2) {
+				start = 2;
+				console.log("check col3");
+			}
+
+			for(var i = start; i < start+7; i += 3) {
+				if(boxes[i].innerHTML != player)
+					break;
+				if(i == start+6) {
+					//report win for player
+					console.log(player + " wins");
+				}
+			}
+		}
+
+		function checkDiag(player, num) {
+			//check diag1
+			if(num == 0 || num == 4 || num == 8) {
+				console.log("check diag1");
+
+				for(var i = 0; i < 9; i += 4) {
+					if(boxes[i].innerHTML != player)
+						break;
+					if(i == 8) {
+						//report win for player
+						console.log(player + " wins");
+					}
+				}
+			}
+			//check diag2
+			if(num == 2 || num == 4 || num == 6) {
+				console.log("check diag2");
+
+				for(var i = 2; i < 7; i += 2) {
+					if(boxes[i].innerHTML != player)
+						break;
+					if(i == 6) {
+						//report win for player
+						console.log(player + " wins");
+					}
+				}
+			}
+		}
+
+		//checks if the game has reached an end condition
+		function checkWin(player, num) {
+			//0: row1, col1, diag1
+			//1: row1, col2
+			//2: row1, col3, diag2
+			//3: row2, col1
+			//4: row2, col2, diag1, diag2
+			//5: row2, col3
+			//6: row3, col1, diag2
+			//7: row3, col2
+			//8: row3, col3, diag1
+
+			//row1: 0, 1, 2 x
+			//row2: 3, 4, 5 x
+			//row3: 6, 7, 8 x
+			//col1: 0, 3, 6 x
+			//col2: 1, 4, 7 x
+			//col3: 2, 5, 8 x
+			//diag1: 0, 4, 8 x
+			//diag2: 2, 4, 6 x
+
+			console.log(player + num);
+
+			//check diagonals only on even spots
+			if(num % 2 == 0) {
+				checkDiag(player, num);
+				// console.log("checking diag");
+			}
+
+			//check rows and columns on everyone
+			checkRow(player, num);
+			checkCol(player, num);
+
+	        //check draw: all the spaces have been filled
+	        if(moveCount == 9){
+	            //report draw
+	            console.log("DRAW");
+	        }
+		}
+
+		//called when a box is clicked on
+		//@param: box is html div, occupied is string "true" or "false"
+		function boxClicked(box, occupied) {
+			boxNums = shuffle(boxNums);
+			console.log(boxNums);
+
+			//only allow user to add to box if it doesn't already have letter
+			if(occupied == "false") {
+
+				//user's move: X
+				box.setAttribute("data-occupied", "true");
+				box.innerHTML = "X";
+				moveCount++;
+
+				//check for end condition's after user's turn
+				checkWin("X", box.getAttribute("data-number"));
+
+				//computer's move: O
+				var spot = -1;
+
+				//wait before moving
+				setTimeout(function() {
+			  		
+			  		//loop through boxes and look for an open space
+			  		for(var i = 0; i < boxes.length; i++) {
+
+			  			//if found an unoccupied spot
+			  			if(boxes[boxNums[i]].getAttribute("data-occupied") == "false") {
+			  				boxes[boxNums[i]].setAttribute("data-occupied", "true");
+							boxes[boxNums[i]].innerHTML = "O";
+							spot = boxNums[i];
+							moveCount++;
+							break;
+			  			}
+			  			
+			  		}
+
+			  		//check win after computer's move
+			  		checkWin("O", spot);
+
+				}, 1500);
+			}
+		}
+
+		//make boxes sense when they're clicked on
+		for(var i = 0; i < boxes.length; i++) {
+
+			boxes[i].setAttribute("data-occupied", "false");
+			boxes[i].setAttribute("data-number", i);
+
+			boxes[i].addEventListener("click", function() {
+        		boxClicked(this, this.getAttribute("data-occupied"));
+   			});
+		}
+
+	</script>
 </body>
 </html>

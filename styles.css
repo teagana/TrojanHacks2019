@@ -36,10 +36,10 @@ body {
 	top: 40vh;
 }
 
-/* FOR MATCH2.HTML */
+/* FOR MATCH2.HTML (and tic tac toe) */
 
 /* the main area for match 2 game */
-#matching-area {
+#matching-area, #game-area {
 	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
@@ -47,7 +47,7 @@ body {
 	top: 25vh;
 }
 
-.matching-row {
+.matching-row, .game-row {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -64,4 +64,43 @@ body {
 }
 
 /* FOR TICTACTOE.HTML */
+
+@font-face {
+  font-family: "Cat";
+  src: url("catfont.otf");
+}
+
+#game-area {
+	top: 20vh;
+}
+
+.game-row {
+	margin-bottom: 0px;
+}
+
+/* each tic tac toe box */
+.box {
+	width: 125px;
+	height: 125px;
+	border: 1px solid black;
+	font-family: "Cat";
+	font-size: 100px;
+	text-align: center;
+}
+.top {
+	border-top: none;
+}
+.bottom {
+	border-bottom: none;
+}
+.left {
+	border-left: none;
+}
+.right {
+	border-right: none;
+}
+
+
+
+
 
