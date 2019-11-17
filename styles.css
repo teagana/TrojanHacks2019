@@ -125,3 +125,18 @@ body {
 }
 
 
+/* FOR SIDE SCROLLER */
+
+#myCanvas {
+	/*margin-left: auto;
+	margin-right: auto;*/
+	position: absolute;
+	top: 25vh;
+
+}
+
+#canvas {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
