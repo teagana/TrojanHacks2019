@@ -35,6 +35,7 @@
 		var boxNums = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 		var moveCount = 0;
 		var winCounter = 0;
+		var userWin = false;
 
 		//resets game board after a win
 		function reset() {
@@ -53,6 +54,7 @@
 			}
 
 			moveCount = 0;
+			userWin = false;
 
 			//get rid of all the win/lose messages
 			var messages = document.querySelectorAll(".msg");
@@ -201,6 +203,8 @@
 
 				//user wins
 				if(player == "X") {
+					userWin = true;
+
 					//flash win message
 					winCounter++;
 					document.querySelector("#game-area").innerHTML += "<h1 class='msg'>you win! "+winCounter+"/3</h1>";
@@ -282,23 +286,37 @@
 
 				//wait before moving
 				setTimeout(function() {
-			  		
-			  		//loop through boxes and look for an open space
-			  		for(var i = 0; i < boxes.length; i++) {
 
-			  			//if found an unoccupied spot
-			  			if(boxes[boxNums[i]].getAttribute("data-occupied") == "false") {
-			  				boxes[boxNums[i]].setAttribute("data-occupied", "true");
-							boxes[boxNums[i]].innerHTML = "O";
-							spot = boxNums[i];
+					if(!userWin) {
+						//if center box is empty, take it
+						if(boxes[4].getAttribute("data-occupied") == "false") {
+							boxes[4].setAttribute("data-occupied", "true");
+							boxes[4].innerHTML = "O";
+							spot = 4;
 							moveCount++;
-							break;
-			  			}
-			  			
-			  		}
+							console.log(boxes[4]);
+						}
+						//center spot is occupied; choose randomly
+						else {
+							//loop through boxes and look for an open space
+					  		for(var i = 0; i < boxes.length; i++) {
 
-			  		//check win after computer's move
-			  		checkWin("O", spot);
+					  			//if found an unoccupied spot
+					  			if(boxes[boxNums[i]].getAttribute("data-occupied") == "false") {
+					  				boxes[boxNums[i]].setAttribute("data-occupied", "true");
+									boxes[boxNums[i]].innerHTML = "O";
+									spot = boxNums[i];
+									moveCount++;
+									break;
+					  			}
+					  			
+					  		}
+						}
+				  	
+				  		//check win after computer's move
+				  		checkWin("O", spot);
+					}
+					
 
 				}, 1000);
 			}
