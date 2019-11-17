@@ -113,4 +113,15 @@ body {
 	width: 100%;
 }
 
+#cat-area {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	position: absolute;
+	top: 45vh;
+	text-align: center;
+	font-size: 50px;
+	display: none;
+}
+
 

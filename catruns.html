@@ -9,6 +9,7 @@
 <body>
 	<div id="outercontainer">
 		<div id="runner"><img src="knifecat.png" /></div>
+		<div id='cat-area'>you win!</div>
 	</div>
 
 	<!-- add jquery to file -->
@@ -17,13 +18,38 @@
 	  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 	  crossorigin="anonymous"></script>
 	<script>
+		var leftX = window.innerWidth/2 - 50;
+		var rightX = window.innerWidth/2 + 50;
+		var topY = window.innerHeight/2 - 50;
+		var bottomY = window.innerHeight/2 + 50;
+
+		var currentX = 0;
+		var currentY = 0;
+
+		console.log(leftX+rightX+topY+bottomY);
+
+
 		$('#runner').on('mouseenter',function(e){
 		    var maxX = $(window).width() - $(this).width();
-		    var maxY = $(window).height() - $(this).height();    
+		    var maxY = $(window).height() - $(this).height();
+
+		    var left = $(this).css('left');
+		    console.log(left);
+
+		    //if top left corner of cat is within the box
+		    if(currentX >= leftX && currentX <= rightX && currentY <= bottomY && currentY >= topY) {
+		    	$("#cat-area").css('display', 'block');
+		    	return;
+		    }
+
+		    currentX = getRandomInt(0, maxX);
+		    currentY = getRandomInt(0, maxY);
+
 		    $(this).css({
-		        'left':getRandomInt(0, maxX),
-		        'top':getRandomInt(0, maxY)
+		        'left':currentX,
+		        'top':currentY
 		    });
+
 		});
 		function getRandomInt(min, max) {
 		    return Math.floor(Math.random() * (max - min + 1)) + min;
