@@ -105,8 +105,19 @@
 				}
 			}
 
+			//if all the cards have been matched
 			if(allMatched) {
 				console.log("ALL MATCHED");
+
+				//flash win message
+				document.querySelector("#matching-area").innerHTML = "<h1>you win!</h1>";
+				document.querySelector("#matching-area").style.textAlign = "center";
+				document.querySelector("#matching-area").style.fontSize = "60px";
+
+				//wait two seconds, then transition to tic tac toe
+				setTimeout(function() {
+						document.location = 'tictactoe.html';
+					}, 2000);
 			}
 		}
 
