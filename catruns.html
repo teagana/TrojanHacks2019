@@ -40,7 +40,10 @@
 		    if(currentX >= leftX && currentX <= rightX && currentY <= bottomY && currentY >= topY) {
 		    	$("#cat-area").css('display', 'block');
 		    	
-		    	document.location='congrats.html';
+		    	//wait two seconds then transition to win page
+		    	setTimeout(function() {
+		    		document.location='congrats.html';
+		    	}, 2000);
 		    }
 
 		    currentX = getRandomInt(0, maxX);
