@@ -102,25 +102,7 @@
   			return Math.floor(Math.random() * (max - min + 1) ) + min;
 		}
 
-		function collisionDetection() {
-			
-		  for(var c=0; c<brickColumnCount; c++) {
-		    for(var r=0; r<brickRowCount; r++) {
-		      var b = bricks[c][r];
-		      if(b.status == 1) {
-		        if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
-		          dy = -dy;
-		          b.status = 0;
-		          score++;
-		          if(score == brickRowCount*brickColumnCount) {
-		            alert("YOU WIN, CONGRATS!");
-		            document.location.reload();
-		          }
-		        }
-		      }
-		    }
-		  }
-		}
+		
 
 		function drawBall() {
 		  ctx.beginPath();
@@ -136,33 +118,7 @@
 		  ctx.fill();
 		  ctx.closePath();
 		}
-		function drawBricks() {
-		  for(var c=0; c<brickColumnCount; c++) {
-		    for(var r=0; r<brickRowCount; r++) {
-		      if(bricks[c][r].status == 1) {
-		        var brickX = (r*(brickWidth+brickPadding))+brickOffsetLeft;
-		        var brickY = ((c*(brickHeight+brickPadding))+brickOffsetTop);
-		        bricks[c][r].x = brickX;
-		        bricks[c][r].y = brickY;
-		        
-		        if (c !=2 && c!=3 && c!=4 && r!=2 && r!=3 && r!=1)
-		        {
-		        bricks[c][r].status == 1;
-		        ctx.beginPath();
-		        ctx.rect(brickX, brickY, brickWidth, brickHeight);
-		        ctx.fillStyle = "#0095DD";
-		        ctx.fill();
-		        ctx.closePath();
-		        }
-		        else
-		        {
-		        	//bricks[c][r].status == 0;
-		        }
-		        
-		      }
-		    }
-		  }
-		}
+		
 		
 		function drawObstacles()
 		{
@@ -319,6 +275,7 @@
 					    }
 					    y=floor[i].y - ballRadius;
 				   }
+				   
 				   if (floor[i].x < -100)
 				    {
 				     	floor[i].valid = 0;
@@ -367,6 +324,7 @@
 						floor[i].bounce = 0;
 						floor[i].sticky = 0;
 						floor[i].fast = 0;
+						floor[i].valid = false;
 
 					}
 
@@ -391,7 +349,7 @@
 			var firsty = canvas.height-20;
 			for (var i=0; i<30; i++)
 			{
-				floor[i].valid = 1;
+				floor[i].valid = 0;
 				floor[i].width = wid;
 				floor[i].height = high;
 				floor[i].y = firsty;
@@ -449,11 +407,12 @@
 		  x += dx;
 		  y += dy;
 		  
-		  if (y > canvas.height)
+		  if (y > canvas.height-15)
 		  {
 		  	//alert("GAME OVER");
 		  	//document.location.reload(true);
-		  	y= canvas.height-20+ballRadius;
+		  	y= canvas.height-20-ballRadius;
+		  	inAir = false;
 		  }
 
 		  if (score == 15)
