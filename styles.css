@@ -101,6 +101,16 @@ body {
 }
 
 
+/* FOR CAT RUNS */
 
+#runner {
+    position: absolute;
+    /*border: 1px solid red;*/
+    width: 70px;
+}
+
+#runner img {
+	width: 100%;
+}
 
 
