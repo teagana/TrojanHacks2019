@@ -34,6 +34,32 @@
 		var boxes = document.querySelectorAll(".box");
 		var boxNums = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 		var moveCount = 0;
+		var winCounter = 0;
+
+		//resets game board after a win
+		function reset() {
+			// console.log("IN RESET");
+			boxes = document.querySelectorAll(".box");
+
+			for(var i = 0; i < boxes.length; i++) {
+
+				console.log("in for loop");
+				boxes[i].setAttribute("data-occupied", "false");
+				boxes[i].innerHTML = "";
+
+				boxes[i].addEventListener("click", function() {
+	        		boxClicked(this, this.getAttribute("data-occupied"));
+	   			});
+			}
+
+			moveCount = 0;
+
+			//get rid of all the win/lose messages
+			var messages = document.querySelectorAll(".msg");
+			for(var k = 0; k < messages.length; k++) {
+				messages[k].style.display = "none";
+			}
+		}
 
 		//function to shuffle boxes array so computer can choose randomly
 		function shuffle(array) {
@@ -75,8 +101,11 @@
 				if(i == start+2) {
 					//report win for player
 					console.log(player + " wins");
+					return true;
 				}
 			}
+
+			return false; //no win
 		}
 
 		function checkCol(player, num) {
@@ -99,8 +128,11 @@
 				if(i == start+6) {
 					//report win for player
 					console.log(player + " wins");
+					return true;
 				}
 			}
+
+			return false; //no win
 		}
 
 		function checkDiag(player, num) {
@@ -114,6 +146,7 @@
 					if(i == 8) {
 						//report win for player
 						console.log(player + " wins");
+						return true;
 					}
 				}
 			}
@@ -127,22 +160,16 @@
 					if(i == 6) {
 						//report win for player
 						console.log(player + " wins");
+						return true;
 					}
 				}
 			}
+
+			return false; //no win
 		}
 
 		//checks if the game has reached an end condition
 		function checkWin(player, num) {
-			//0: row1, col1, diag1
-			//1: row1, col2
-			//2: row1, col3, diag2
-			//3: row2, col1
-			//4: row2, col2, diag1, diag2
-			//5: row2, col3
-			//6: row3, col1, diag2
-			//7: row3, col2
-			//8: row3, col3, diag1
 
 			//row1: 0, 1, 2 x
 			//row2: 3, 4, 5 x
@@ -155,20 +182,81 @@
 
 			console.log(player + num);
 
+			//flags for wins
+			var diag = false;
+			var row = false;
+			var col = false;
+
 			//check diagonals only on even spots
 			if(num % 2 == 0) {
-				checkDiag(player, num);
-				// console.log("checking diag");
+				diag = checkDiag(player, num);
 			}
 
 			//check rows and columns on everyone
-			checkRow(player, num);
-			checkCol(player, num);
+			row = checkRow(player, num);
+			col = checkCol(player, num);
+
+			//if current player got a win on any of these:
+			if(row || col || diag) {
+
+				//user wins
+				if(player == "X") {
+					//flash win message
+					winCounter++;
+					document.querySelector("#game-area").innerHTML += "<h1 class='msg'>you win! "+winCounter+"/3</h1>";
+					document.querySelector("#game-area").style.textAlign = "center";
+					document.querySelector("#game-area").style.fontSize = "40px";
+
+					
+					//subract (all) win message(s) after 2 seconds/transition
+					setTimeout(function() {
+
+						//if this was third win, move to next page
+						if(winCounter == 3) {
+							document.location = 'guyruns.html';
+						}
+						
+						//otherwise reset the board for the next round
+						else {
+							reset();
+						}
+
+					}, 2000);
+				}
+
+				//computer wins; user loses
+				else {
+					document.querySelector("#game-area").innerHTML += "<h1 class='msg'>you lose :(</h1>";
+					document.querySelector("#game-area").style.textAlign = "center";
+					document.querySelector("#game-area").style.fontSize = "40px";
+
+					winCounter = 0;
+					setTimeout(function() {
+
+						//start over
+						reset();
+
+					}, 2000);
+
+				}
+			}	
 
 	        //check draw: all the spaces have been filled
 	        if(moveCount == 9){
 	            //report draw
 	            console.log("DRAW");
+
+	            winCounter = 0;
+				document.querySelector("#game-area").innerHTML += "<h1 class='msg'>cat's game</h1>";
+				document.querySelector("#game-area").style.textAlign = "center";
+				document.querySelector("#game-area").style.fontSize = "40px";
+
+				setTimeout(function() {
+
+					//start over
+					reset();
+
+				}, 2000);
 	        }
 		}
 
@@ -212,7 +300,7 @@
 			  		//check win after computer's move
 			  		checkWin("O", spot);
 
-				}, 1500);
+				}, 1000);
 			}
 		}
 
